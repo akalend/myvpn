@@ -1,0 +1,48 @@
+mode server
+tls-server
+proto tcp-server
+dev tun
+topology subnet
+local 94.130.91.89
+port 3074
+ca /etc/openvpn/keys/ca.crt
+cert /etc/openvpn/keys/server.crt
+key /etc/openvpn/keys/server.key
+# dh /etc/openvpn/keys/dh2048.pem
+
+server 172.16.242.0 255.255.255.0
+push "route 172.16.242.0 255.255.255.0"
+push "redirect-gateway"
+push "dhcp-option DNS 172.16.242.1"
+
+# tls-verify /etc/openvpn/bin/auth.py
+# learn-address /etc/openvpn/bin/learn.py
+# client-disconnect /etc/openvpn/bin/disconnect.py
+
+user nobody
+group nobody
+verb 3 
+daemon
+nice -5
+cipher AES-256-CBC
+persist-key
+persist-tun
+tcp-queue-limit 8192
+rcvbuf 1048576
+sndbuf 1048576
+script-security 2
+tcp-nodelay
+hand-window 1000
+tls-timeout 1000
+reneg-sec 3600
+port-share localhost 3128
+duplicate-cn
+keepalive 120 360
+txqueuelen 4096
+no-replay
+comp-lzo no
+
+writepid /tmp/openvpn-pid.3074.tcp
+management /tmp/openvpn-socket.3074.tcp unix
+inactive 43200
+

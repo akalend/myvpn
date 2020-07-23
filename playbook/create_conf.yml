@@ -1,0 +1,61 @@
+- name: Create configs 
+  hosts: 127.0.0.1
+  connection: local
+  # become: False
+  vars:
+    # home: /home/akalend/projects/myvpn/
+    pki: /home/akalend/projects/myvpn/pki
+    # number: $NUMBER
+
+  tasks:
+
+    - name: show PKI workspace
+      debug:
+        msg: "{{pki}}/{{number}}/server.conf"
+
+    - name: create server config
+      template: 
+        src: template/server.conf
+        dest: "{{pki}}/{{number}}/server.conf"
+
+
+    - name: create client config
+      template: 
+        src: template/client.conf
+        dest: "{{pki}}/download/{{number}}.ovpn"
+
+    # - name: creates PKI workspace
+    #   file:
+    #     path: "{{pki}}/{{number}}"
+    #     state: directory
+
+
+    # - name: init pki
+    #   shell: 
+    #     cmd: "export NUMBER={{number}};  chdir {{pki}}/{{number}} && {{easy_rsa}} init-pki"
+        
+    # - name: build root certificates
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}} && {{easy_rsa}} build-ca nopass"
+
+
+    # - name: build server certificates
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}}; {{easy_rsa}} build-server-full server  nopass"
+
+    # - name: build client certificates
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}}; {{easy_rsa}} build-client-full client  nopass"
+
+
+    # - name: generate Diffie Hellman key
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}}; {{easy_rsa}} gen-dh"
+
+    # - name: generate TLS Auth key
+    #   shell:
+    #     cmd: "openvpn --genkey --secret {{pki}}/{{number}}/ta.key"
+
+    # - name: Finish PKI 
+    #   debug:
+    #     msg: "Client Id {{number}}"

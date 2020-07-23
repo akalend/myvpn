@@ -1,0 +1,101 @@
+<head>
+
+	<script type="text/javascript" src="js/jquery.js" charset="utf-8"></script>
+	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+	<meta charset="utf-8"/>
+</head>
+<body >
+
+	<h1>My VPN {id}</h1>
+
+	<div>
+		<input type=tex name="host"  value="" id="ip" /><br>
+		<input type=text  id="psw"  name="pass" value=""></input><br>
+		
+		<button onclick="generate()">GENERATE</button>
+		<button onclick="show()">stop</button>
+	</div>
+
+	<div  id="config" style="display: none"><a target="_blanlk" href="/download/{id}.ovpn">config file</a></div>
+	
+	<div id="block">
+		<div  >Console</div>
+		<div id="console" style="height: 400px; width: 800px; overflow: auto; font-size: 10; color: white; background-color: black; font-size: 11pt;"></div>
+	</div>
+
+
+	<script>
+	    var gtimer = null
+	    var ptimer = null
+
+	    function show(){
+			$("#block").hide()
+			$("#config").show()
+	    
+	    }
+
+
+		function generate() {
+			var ip = $("#ip").val();
+			console.log(ip);
+			var psw = $("#psw").val();
+			var data = {"ip": ip, "id": {id}, "psw": psw  };
+			console.log(data);
+
+			$.post('/start', data	).done(function(in_data){
+				console.log("done=");
+				console.log(in_data);
+			});
+
+			console.log('pull_console start');
+			pull_console();
+			pull_status();
+		}
+
+		function pull_console() {
+			
+			ptimer = setTimeout(pull_console, 2000);
+			$.get('/log/txt_{id}.log').done(function(data){
+				console.log('pull_console');
+				// console.log(data)
+				$("#console").html(data);
+			}).fail(function() {
+    			console.log( "pull log error" );
+
+  			});
+		}
+
+
+		function pull_status() {
+			gtimer = setTimeout(pull_status, 2000);
+			$.get('/status/{id}').done(function(data){
+				
+				console.log('pull_status' + data);
+				if (data == '1') {
+					clearTimeout(gtimer) 
+					clearTimeout(ptimer)
+					$("#console").css("displey: none")
+					$("#config").css("displey: block")
+
+				}
+				// $("#console").html(data);
+
+			}).fail(function() {
+    			console.log( "status error" );
+					// clearTimeout(gtimer) 
+					// clearTimeout(ptimer) 
+
+  			});
+		}
+
+		// function pull_status() {
+		// 	$.get('http://127.0.0.1//status/{id}'	).done(function(data){
+		// 		console.log("done=" + data)
+		// 		if (data == '1\n'){
+		// 			setTimeout(pull_status, 2500);
+		// 		}
+		// 	});
+		// }
+		// pull_status();
+	</script>
+</body>

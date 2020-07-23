@@ -1,0 +1,41 @@
+- name: Install openvpn on server 
+  hosts: all
+  become: True
+  tasks:
+
+
+    - name: debug
+      debug:
+        msg: "{{groups.all}}"
+
+
+    - name: debug 2
+      debug:
+        msg: "test"
+
+    # - name: Install soft
+    #   yum:
+    #   with_items:
+    #     - openvpn
+    #     - openssl
+    #     # - gcc
+    #     # - openssl-devel
+    #     # - python3-devel
+    #     # - python2-pip
+    #     # - pcre-devel
+    #     - yum-utils
+
+
+    # - name: Create pk
+    #   command: openssl genrsa -out server.pk.key 2048
+
+    # - name: Installing python modules
+    #   pip: name=pycrypto
+      # executable: pip2
+
+    # - name: Installing python modules
+    #   pip: name="{{ item }}"
+    #   with_items:
+    #       - pycrypto
+    #       - cryptography
+    #       - PyOpenSSL

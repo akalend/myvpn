@@ -1,0 +1,53 @@
+- name: Install openvpn remote 
+  hosts: remote
+  # connection: local
+  # become: False
+  vars:
+    # home: /home/akalend/projects/myvpn/
+    pki: /home/akalend/projects/myvpn/pki
+    number: $NUMBER
+    easy_rsa: /home/akalend/src/easy-rsa/easyrsa3/easyrsa
+
+
+  tasks:
+
+    - name: show PKI part 2
+      debug:
+        msg: "{{pki}}/{{number}}"
+
+
+    # - name: creates PKI workspace
+    #   file:
+    #     path: "{{pki}}/{{number}}"
+    #     state: directory
+
+
+    # - name: init pki
+    #   shell: 
+    #     cmd: "export NUMBER={{number}};  chdir {{pki}}/{{number}} && {{easy_rsa}} init-pki"
+        
+    # - name: build root certificates
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}} && {{easy_rsa}} build-ca nopass"
+
+
+    # - name: build server certificates
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}}; {{easy_rsa}} build-server-full server  nopass"
+
+    # - name: build client certificates
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}}; {{easy_rsa}} build-client-full client  nopass"
+
+
+    # - name: generate Diffie Hellman key
+    #   shell:
+    #     cmd: "export NUMBER={{number}}; cd {{pki}}/{{number}}; {{easy_rsa}} gen-dh"
+
+    # - name: generate TLS Auth key
+    #   shell:
+    #     cmd: "openvpn --genkey --secret {{pki}}/{{number}}/ta.key"
+
+    # - name: Finish PKI 
+    #   debug:
+    #     msg: "Client Id {{number}}"
