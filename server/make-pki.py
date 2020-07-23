@@ -139,9 +139,9 @@ def start(id):
     return
 
     inventory.add_group('remote')
-    inventory.add_host(host='78.47.159.230', group='remote', port=40000)
+    inventory.add_host(host='127.0.0.1', group='remote', port=40000)
     
-    # inventory.subset('94.130.91.89')
+    # inventory.subset('ip')
     variable_manager.set_inventory(inventory) 
 
     playbook_path = home_path + 'pki-test.yml'

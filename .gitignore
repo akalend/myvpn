@@ -5,4 +5,5 @@ server/myvpn/__pycache__/*
 site/error.log
 status/*
 pk.pem
+ansible.log
 
